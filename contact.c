@@ -2,9 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stddef.h>
 #include "contact.h"
 #include "file.h"
-#include "populate.h"
+
+char *my_strcasestr(const char *haystack, const char *needle) {
+    if (*needle == '\0')
+        return (char *)haystack;
+
+    for (; *haystack != '\0'; haystack++) {
+        const char *h = haystack;
+        const char *n = needle;
+
+        while (*h != '\0' && *n != '\0' && tolower((unsigned char)*h) == tolower((unsigned char)*n)) {
+            h++;
+            n++;
+        }
+        if (*n == '\0')
+            return (char *)haystack;
+    }
+    return NULL;
+}
 
 void sortByName(AddressBook *addressBook) {
     for(int i = 0; i < addressBook->contactCount - 1; i++) {
@@ -139,7 +157,7 @@ void searchContact(AddressBook *addressBook) {
             printf("\nEnter name: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].name, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].name, str) != NULL) {
                     printf("\nContact found!\n");
                     printf("Name: %s\n", addressBook->contacts[i].name);
                     printf("Phone: %s\n", addressBook->contacts[i].phone);
@@ -155,7 +173,7 @@ void searchContact(AddressBook *addressBook) {
             printf("\nEnter phone: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].phone, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].phone, str) != NULL) {
                     printf("\nContact found!\n");
                     printf("Name: %s\n", addressBook->contacts[i].name);
                     printf("Phone: %s\n", addressBook->contacts[i].phone);
@@ -171,7 +189,7 @@ void searchContact(AddressBook *addressBook) {
             printf("\nEnter email: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].email, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].email, str) != NULL) {
                     printf("\nContact found!\n");
                     printf("Name: %s\n", addressBook->contacts[i].name);
                     printf("Phone: %s\n", addressBook->contacts[i].phone);
@@ -203,7 +221,7 @@ void editContact(AddressBook *addressBook) {
             printf("\nEnter name to search for the contact to edit: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].name, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].name, str) != NULL) {
                     printf("\nEnter new name: ");
                     scanf(" %[^\n]", addressBook->contacts[i].name);
                     printf("Enter new phone: ");
@@ -222,7 +240,7 @@ void editContact(AddressBook *addressBook) {
             printf("\nEnter phone to search for the contact to edit: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].phone, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].phone, str) != NULL) {
                     printf("\nEnter new name: ");
                     scanf(" %[^\n]", addressBook->contacts[i].name);
                     printf("Enter new phone: ");
@@ -241,7 +259,7 @@ void editContact(AddressBook *addressBook) {
             printf("\nEnter email to search for the contact to edit: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].email, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].email, str) != NULL) {
                     printf("\nEnter new name: ");
                     scanf(" %[^\n]", addressBook->contacts[i].name);
                     printf("Enter new phone: ");
@@ -276,7 +294,7 @@ void deleteContact(AddressBook *addressBook) {
             printf("\nEnter name to delete: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].name, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].name, str) != NULL) {
                     found = 1;
                     for(int j = i; j < addressBook->contactCount - 1; j++) {
                         addressBook->contacts[j] = addressBook->contacts[j + 1];
@@ -293,7 +311,7 @@ void deleteContact(AddressBook *addressBook) {
             printf("\nEnter phone to delete: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].phone, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].phone, str) != NULL) {
                     found = 1;
                     for(int j = i; j < addressBook->contactCount - 1; j++) {
                         addressBook->contacts[j] = addressBook->contacts[j + 1];
@@ -310,7 +328,7 @@ void deleteContact(AddressBook *addressBook) {
             printf("\nEnter email to delete: ");
             scanf(" %[^\n]", str);
             for(int i = 0; i < addressBook->contactCount; i++) {
-                if(strcasestr(addressBook->contacts[i].email, str) != NULL) {
+                if(my_strcasestr(addressBook->contacts[i].email, str) != NULL) {
                     found = 1;
                     for(int j = i; j < addressBook->contactCount - 1; j++) {
                         addressBook->contacts[j] = addressBook->contacts[j + 1];

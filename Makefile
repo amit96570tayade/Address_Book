@@ -1,12 +1,10 @@
-all: a.out
-
-a.out: main.o contact.o file.o populate.o
-	gcc -o a.out main.o contact.o file.o populate.o
+addressbook: main.o contact.o file.o populate.o
+	gcc main.o contact.o file.o populate.o -o addressbook
 
 main.o: main.c contact.h
 	gcc -c main.c
 
-contact.o: contact.c contact.h file.h populate.h
+contact.o: contact.c contact.h file.h
 	gcc -c contact.c
 
 file.o: file.c file.h
@@ -15,8 +13,8 @@ file.o: file.c file.h
 populate.o: populate.c populate.h contact.h
 	gcc -c populate.c
 
-run: a.out
-	./a.out
+run: addressbook
+	./addressbook
 
 clean:
-	rm -f *.o a.out
+	rm -f *.o addressbook
